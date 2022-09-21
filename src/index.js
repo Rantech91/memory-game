@@ -55,8 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(cardArray)
 
     const grid = document.querySelector('.grid')
+    const resultDisplay = document.querySelector('#result')
     let cardsChosen = []
     let cardsChosenIds = []
+    let cardsWon =  []
 
     function createBoard(){
         for (let i = 0; i < cardArray.length; i++) {
@@ -66,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.addEventListener('click', flipCard)
             grid.appendChild(card)
     }}
-    createBoard()
+    
 
     function flipCard(){
         let cardId = this.getAttribute('data-id')
@@ -86,9 +88,27 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('You have clicked the same image!')
             cards[optionOneId].setAttribute('src', 'src/images/blank.png')
             cards[optionTwoId].setAttribute('src', 'src/images/blank.png')
-        } else if (){
-
+        } else if (cardsChosen[0] === cardsChosen[1]){
+            alert('You have found a match')
+            cards[optionOneId].setAttribute('src', 'src/images/white.png')
+            cards[optionTwoId].setAttribute('src', 'src/images/white.png')
+            cards[optionOneId].removeEventListener('click', flipCard)
+            cards[optionTwoId].removeEventListener('click', flipCard)
+            cardsWon.push(cardsChosen) 
+        } else {
+            cards[optionOneId].setAttribute('src', 'src/images/blank.png')
+            cards[optionTwoId].setAttribute('src', 'src/images/blank.png')
+            alert('Sorry, try again!')
         }
+        cardsChosen = []
+        cardsChosenIds = []
+        resultDisplay.textContent = cardsWon.length
+        if (cardsWon.length === cardArray.length / 2){
+            resultDisplay.textContent = 'Congratulations! You have won!'
+        }
+
+        console.log(cardsChosen)
+        console.log(cardsWon)
     }
     createBoard()
 })
